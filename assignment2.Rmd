@@ -28,11 +28,6 @@ The data analysis aim to address the following questions:
 
 2. Across the United States, which types of events have the greatest economic consequences?
 
-###Notes about the environment used
-RStudio version 3.3.3
-Published in rpubs.com using Markdown and knitr
-Full project: https://github.com/marcelladane/reproducible-research-assignment-2 
-
 ###Data processing
 
 Start by loading the needed packages
@@ -164,7 +159,7 @@ p1 <- ggplot(data=top20_fatalities,
        aes(x=reorder(EVTYPE, FATALITIES), y=FATALITIES,      fill=FATALITIES)) +
        geom_bar(stat="identity") +
        coord_flip() +
-       ylab("Top 20 types of fatalities") +
+       ylab("Top 20 fatalities") +
        xlab("Event type") +
        theme(legend.position="none")
 
@@ -176,7 +171,7 @@ p2 <- ggplot(data=top20_injuries,
       aes(x=reorder(EVTYPE, INJURIES), y=INJURIES, fill=INJURIES)) +
       geom_bar(stat="identity") +
       coord_flip() +
-      ylab("Top 20 types of injuries") +
+      ylab("Top 20 injuries") +
       xlab("Event type") +
       theme(legend.position="none")
 
@@ -194,6 +189,8 @@ To answer this question, we should go further than just property damage and also
 
 The plot will be a double plot showing the economic burden of natural cathastrophes in USA.
 
+The data is presented in log10 base to facilitate visualization.
+
 ```{r Costs_Events}
 prop_cost <- aggregate (PROP~EVTYPE, selected_data, sum)
 prop_cost <- prop_cost [order(prop_cost$PROP, decreasing=TRUE),]
@@ -203,9 +200,9 @@ p1 <- ggplot(data=top20_PROP,
              aes(x=reorder(EVTYPE, PROP), y=log10(PROP), fill=PROP )) +
     geom_bar(stat="identity") +
     coord_flip() +
-    ylim(0,15) +
+    ylim(0,12) +
     xlab("Event type") +
-    ylab("Property damage in dollars (log10)") +
+    ylab("Property damage ($)") +
     theme(legend.position="none")
 
 crop_cost <- aggregate (CROP~EVTYPE, selected_data, sum)
@@ -216,9 +213,9 @@ p2 <- ggplot(data=top20_CROP,
              aes(x=reorder(EVTYPE, CROP), y=log10(CROP), fill=CROP)) +
     geom_bar(stat="identity") +
     coord_flip() + 
-    ylim(0,15) +
+    ylim(0,12) +
     xlab("Event type") +
-    ylab("Crop damage in dollars (log10)") + 
+    ylab("Crop damage ($)") + 
     theme(legend.position="none")
 
 ggplot2.multiplot(p1, p2)
@@ -229,3 +226,10 @@ dev.off ()
 ```
 
 As it's possible to see from the graphs, concerning properties the main economic burden in USA is flood, while for crops is drought. But interestingly, flood is the second highest factor for crops, therefore is possible to say that in sum, flood is the main economic burden in USA when comes to natural cathastrophes. 
+
+###Notes about the environment used
+RStudio version 3.3.3
+
+Published in rpubs.com using Markdown and knitr
+
+Full project: https://github.com/marcelladane/reproducible-research-assignment-2 
